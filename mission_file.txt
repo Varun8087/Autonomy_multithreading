@@ -1,0 +1,46 @@
+This is the format of the new mission file.
+
+{
+    "Missionfile": {
+        "metadata": {
+            "name": "name",
+        },
+        "Actiondata": {
+            "geofence": [[1,2],[2,3],[3,4],[4,5]],
+            "waypoints": [{ "id": 1, "latitude": 13.074789300410917, "longitude": 77.36589142070281, "pre_timeout": 45, "post_timeout": 45,"action": "s_sprayer", "turn": {"value": false, "sensitivity": 0}}, 
+{"id": 2, "latitude": 13.074787398837, "longitude": 77.36604369097698, "pre_timeout": 2, "post_timeout": 45,"action": "e_sprayer, "turn": {"value": true, "sensitivity": 0.5}},
+{ "id": 1, "latitude": 13.07470753271954, "longitude": 77.36604661925149, "pre_timeout": 45, "post_timeout": 45,"action": "s_sprayer", "turn": {"value": false, "sensitivity": 0}},
+{"id": 2, "latitude": 13.074709434294064, "longitude": 77.3658972772518, "pre_timeout": 2, "post_timeout": 45,"action": "e_sprayer, "turn": {"value": false, "sensitivity": 0}}],
+            "repeat": true
+        }
+    }
+}
+
+
+
+
+geofence array: [{"id": "1", "latitude": 13.00485959472343, "longitude": 77.54734005779027}, {"id": "2", "latitude": 13.00460772691893, "longitude": 77.5468347966671}, {"id": "3", "latitude": 13.00379528000139, "longitude": 77.54714861512184}, {"id": "4", "latitude": 13.004057275638985, "longitude": 77.54783257842064}]
+
+waypoints array: [{ "id": 1, "latitude": 13.0042387, "longitude": 77.5473342, "timeout": "45", "velocity": "23","action": "h-up"}, {"id": 2, "latitude": 13.004195099999999, "longitude": 77.54735099999999, "timeout": "2", "velocity": "22","action": "h-down"}]
+
+
+
+example of file example in wesocket server
+
+{"data":"{\"Missionfile\":{\"metadata\":{\"name\":\"hello\"},\"Actiondata\":{\"geofence\":[[13.074984521815555,77.3653930798173],[13.074330373123006,77.36532736569643],[13.074283998062489,77.36596170812847],[13.074945331728049,77.36599288880825]],\"waypoints\":[[13.074821882911719,77.36550640314817],[13.074590661153017,77.36550204455853],[13.07464160833881,77.36582592129709]],\"repeat\":false}}}"}
+
+[{ "id": 1, "latitude": 13.074789300410917, "longitude": 77.36589142070281, "pre_timeout": 45, "post_timeout": 45,"action": "s_sprayer", "turn": {"value": false, "sensitivity": 0}}, 
+{"id": 2, "latitude": 13.074787398837, "longitude": 77.36604369097698, "pre_timeout": 2, "post_timeout": 45,"action": "e_sprayer, "turn": {"value": true, "sensitivity": 0.5}},
+{ "id": 1, "latitude": 13.07470753271954, "longitude": 77.36604661925149, "pre_timeout": 45, "post_timeout": 45,"action": "s_sprayer", "turn": {"value": false, "sensitivity": 0}},
+{"id": 2, "latitude": 13.074709434294064, "longitude": 77.3658972772518, "pre_timeout": 2, "post_timeout": 45,"action": "e_sprayer, "turn": {"value": false, "sensitivity": 0}}]
+13.074789300410917, 77.36589142070281
+13.074787398837, 77.36604369097698
+13.07470753271954, 77.36604661925149
+13.074709434294064, 77.3658972772518
+
+
+P B P
+H H B 
+
+        |
+________|_______

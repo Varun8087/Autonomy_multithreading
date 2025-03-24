@@ -1,0 +1,74 @@
+FROM 15.206.66.221:8000/autonomy-si/ros-base-desktop:app
+
+ARG username
+ARG password
+ARG workdir
+ARG home
+
+# RUN UPDATE
+RUN apt-get update && apt-get -y upgrade
+
+# INSTALL ROS-BRIDGE
+RUN    apt-get install -y ros-humble-rosbridge-server ros-humble-rosbridge-suite
+
+# INSTALL PACKAGES
+RUN pip --no-cache-dir install Adafruit-Blinka==8.19.0 adafruit-circuitpython-bno055==5.4.9 \
+adafruit-circuitpython-gps==3.10.10 adafruit-circuitpython-busdevice==5.2.6 adafruit-circuitpython-register==1.9.16 \
+adafruit-circuitpython-requests==1.14.1 adafruit-circuitpython-typing==1.9.4 Adafruit-PlatformDetect==3.46.0 \
+Adafruit-PureIO==1.1.11 pykalman \
+scipy shapely geopy opencv-python pyserial gpiod python-can py_trees pyproj pyquaternion \
+filterpy sparkfun-ublox-gps spidev bezier
+
+# CREATE DIRECTORIES
+RUN mkdir -p "${workdir}/src"
+RUN mkdir -p "${home}/.local/autonomy_si"
+RUN mkdir /var/autonomy_si
+WORKDIR ${workdir}
+
+# APPLY PATCH FOR ADAFFRUIT IMU LIBRARY
+RUN git clone https://${username}:${password}@gitlab.com/rebhu/Read_MEs.git && cd Read_MEs && git checkout develop
+RUN cd Read_MEs/IMU-BNO055 && bash ./setup.sh
+
+RUN pip freeze
+# CLEANUP
+RUN rm -rf Read_MEs
+# RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+
+# SOURCE and CREATE ROS2 PACKAGE
+WORKDIR "${workdir}/src"
+
+RUN . /opt/ros/humble/setup.sh && cd "${workdir}/src" && ros2 pkg create --build-type ament_python autonomy_si
+
+WORKDIR "${workdir}/src/autonomy_si/autonomy_si"
+
+RUN ls
+# CLONE OCULAR
+RUN git clone https://${username}:${password}@gitlab.com/rebhu/autonomy-si/ocular2.git && cd ocular2 && git checkout develop
+
+
+WORKDIR "${workdir}/src/autonomy_si"
+
+
+# EDIT SETUP FILE
+RUN sed -i "/packages=/s/.*/    packages=[package_name, package_name+'.ocular2', package_name+'.ocular2.app', package_name+'.ocular2.app.utils', package_name+'.ocular2.app.trees', package_name+'.ocular2.app.navigation', package_name+'.ocular2.app.navigation.waypoint'],/" setup.py
+
+RUN sed -i "/console_scripts/a\ \t\t'listener = autonomy_si.ocular2.ros2_integration:main'" setup.py
+
+WORKDIR ${workdir}
+
+# COPY STARTUP SCRIPT
+COPY ./startup.sh .
+
+# BUILD APP
+RUN colcon build
+
+
+# EXPORT WORKSPACE
+RUN sed -i "/source/a source ${workdir}/install/setup.bash" /ros_entrypoint.sh
+
+CMD ["bash", "./startup.sh"]
+
+# sudo podman build --build-arg username=****** --build-arg password=****** --build-arg workdir=${HOME}/ros2_ws --build-arg home=${HOME} -t 15.206.66.221:8000/autonomy-si/ros2:v1.3.1 -f ContainerFile
+
+# sudo podman run -d --name autonomy-si-ros2 --privileged -v /proc:/proc:Z -v /dev/bone/uart/1:/dev/bone/uart/1:Z -v /dev/bone/uart/5:/dev/bone/uart/5:Z --device=/dev/gpiochip0 --device=/dev/gpiochip1 --device=/dev/gpiochip2 -v /sys/class/gpio:/sys/class/gpio:Z -v /var/log/autonomy-si:/var/autonomy_si:Z -v /home/debian/.local/autonomy_si:/home/debian/.local/autonomy_si:Z --network=host -t 15.206.66.221:8000/autonomy-si/ros2:v1.3.1

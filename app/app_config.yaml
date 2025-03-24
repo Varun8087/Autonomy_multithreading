@@ -1,0 +1,34 @@
+app_name: Navigation for AutonomySi
+
+# CAN
+interface:
+  can0:
+    channel: can0
+    bitrate: 500000
+    
+
+sensors:
+  gps0:
+    gps_serial_port: /dev/bone/uart/1
+    gps_baudrate: 9600
+    gps_timeout: 0.5      # in Sec
+    gps_refresh_rate: 100 # in mSec
+  
+  rtk0:
+    rtk_gps_serial_port: /dev/bone/uart/5
+    rtk_gps_baudrate: 38400
+    rtk_gps_timeout: 1      # in Sec
+    rtk_serial_port: /dev/bone/uart/1
+    rtk_baudrate: 38400
+    rtk_timeout: 0.5      # in Sec
+    ntrip_host: caster.emlid.com
+    ntrip_port: 2101
+    ntrip_mountpoint: MP11924
+    ntrip_username: u48696
+    ntrip_password: 789ejz
+
+
+  imu0:
+    data_buffer: 10
+    calibrate_buffer: 5
+    calibration_values: [0,0,0,0,0,0,32,250,104,254,27,2,163,163,49,48,232,232,232,3,69,2]

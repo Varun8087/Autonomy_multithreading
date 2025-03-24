@@ -1,2 +1,17 @@
-# Autonomy_multithreading
-The Autonomy Stack for UGVs is a powerful suite for developing intelligent ground vehicles. It integrates perception, path planning, localization, control, and decision-making, enabling sensor fusion, obstacle avoidance, and autonomous navigation. Designed for research, industry, and field use, it offers scalable, robust UGV solutions.
+├── __init__.py
+└── ocular
+    ├── app
+    │   ├── __init__.py
+    │   ├── navigation
+    │   │   ├── geofence
+    │   │   │   └── __init__.py
+    │   │   ├── __init__.py
+    │   │   ├── person_detection
+    │   │   │   └── __init__.py
+    │   │   └── waypoint
+    │   │       └── __init__.py
+    │   ├── run.py
+    │   └── utils
+    │       └── __init__.py
+    ├── docs
+    └── README.md

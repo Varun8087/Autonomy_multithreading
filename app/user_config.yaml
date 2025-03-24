@@ -1,0 +1,49 @@
+interface:
+  can0:
+    battery: 
+      id: 769     # Hexadecimal: 301 | Decimal: 769
+    kill: 
+      id: 19      # Hexadecimal: 13  | Decimal: 19
+      kill_msg: 0
+      release_msg: 1         
+    control: 
+      id: 580     # Hexadecimal: 244 | Decimal: 580
+      steering:
+        byte_position: 0
+        max: 127
+        turn_sensitivity: 0.9 # 0-1
+        sensitivity: 0.6 # 0-1
+      throttle:
+        byte_position: 1
+        max: 127    #0-127
+        turn_sensitivity: 0.4 # 0-1
+        sensitivity: 0.8 # 0-1
+      attachment:
+        sprayer:
+          byte_position: 7
+          start_msg: 255
+          stop_msg: 0
+        
+  ros2:
+    max_x: 1
+    max_z: 1
+    x_sensitivity: 0.1
+    z_sensitivity: 0.6
+    x_turn_sensitivity: 0.0
+    z_turn_sensitivity: 0.9
+    
+    
+navigation:
+  geofence: 
+    active: True
+  visual: 
+    active: True
+  waypoints: 
+    active: True
+    step_xy: 5       #in meters
+    proxy_radi: 2
+    basing_proxy_radi: 1
+    bearing_tol: 10
+    crawl_dist: 5        # should be less than equal to step_xy
+    no_move_dist: 100
+    turn_points: 5
